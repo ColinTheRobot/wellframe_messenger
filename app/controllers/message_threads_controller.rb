@@ -4,33 +4,17 @@ class MessageThreadsController < ApplicationController
   def index
     user = User.includes(message_threads: [:messages])
                .find(params[:current_user])
-    # if user.role == 'patient'
+
+    if user.role === "patient"
       unread_messages = user.messages.where(read: false)
-    # else
-
-    if user.role == 'patient'
       render json: {
-        # message_threads: user.message_threads,
-        unread_message_count: unread_messages.count,
+        unread_messages_count: unread_messages.count,
         unread_messages: unread_messages
       }
-    elsif user.role == 'care_manager'
-      binding.pry
-      render json: {
-        message_threads: user.message_threads.merge({messages: messages}),
-        unread_message_count: unread_messages.count,
-        unread_messages: unread_messages
-      }
+    elsif user.role === "care_manager"
+      threads = user.patients.as_json(include: :messages)
+      render json: threads
     end
-
-
-    # TODO merge data fields
-    # render json: {
-    #   message_threads: user.message_threads.attributes.merge(
-    #     message_count: user.message_threads[0].messages.count,
-    #     messages: [user.message_threads[0].messages]
-    #   )
-    # }
   end
 
   def update

@@ -9,7 +9,7 @@ class MessagesController < ApplicationController
 
   def create
     message_thread = MessageThread.find(params[:message_thread_id])
-    
+
     message_thread.messages.create(message_params)
 
     render status: 201, json: {message: "Successfully created message."}
