@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+User.create(name: 'Patient A', role: 'patient')
+User.create(name: 'Care Manager A', role: 'care_manager')
+
+User.first.care_managers << User.last
+MessageThread.last.messages.create(message_text: 'get better', author: 'Care Manager A')
