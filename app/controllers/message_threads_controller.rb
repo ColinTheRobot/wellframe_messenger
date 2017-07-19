@@ -1,9 +1,10 @@
 class MessageThreadsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  # Controller expecting query_paramter `user_id=1`
 
   def index
     user = User.includes(message_threads: [:messages])
-               .find(params[:current_user])
+               .find(params[:user_id])
 
     if user.role === "patient"
       unread_messages = user.messages.where(read: false)

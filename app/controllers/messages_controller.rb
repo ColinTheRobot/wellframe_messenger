@@ -1,8 +1,6 @@
 class MessagesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-  # Controller expecting query_paramter `current_user=1`
-
   def index
     messages = Message.where(message_thread_id: params[:message_thread_id])
 
