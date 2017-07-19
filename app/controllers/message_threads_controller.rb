@@ -2,19 +2,26 @@ class MessageThreadsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    # if a patient retrieve their message thread
-    # if a care managers retrieve their message threads
-    
     user = User.includes(message_threads: [:messages])
                .find(params[:current_user])
-    unread_messages = user.message_threads[0].messages.where(read: false)
+    # if user.role == 'patient'
+      unread_messages = user.messages.where(read: false)
+    # else
 
-
-    render json: {
-      message_threads: user.message_threads,
-      unread_message_count: unread_messages.count,
-      unread_messages: unread_messages
-    }
+    if user.role == 'patient'
+      render json: {
+        # message_threads: user.message_threads,
+        unread_message_count: unread_messages.count,
+        unread_messages: unread_messages
+      }
+    elsif user.role == 'care_manager'
+      binding.pry
+      render json: {
+        message_threads: user.message_threads.merge({messages: messages}),
+        unread_message_count: unread_messages.count,
+        unread_messages: unread_messages
+      }
+    end
 
 
     # TODO merge data fields

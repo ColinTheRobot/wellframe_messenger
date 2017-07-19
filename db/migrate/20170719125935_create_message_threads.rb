@@ -8,8 +8,3 @@ class CreateMessageThreads < ActiveRecord::Migration[5.1]
     end
   end
 end
-
-
-# create_join_table :users, :care_managers, table_name: :message_threads do |t|
-#     t.index [:user_id, :care_manager_id], unique: true
-# end
